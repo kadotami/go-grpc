@@ -1,6 +1,6 @@
 #!/bin/sh
 
-CLIENT_OUTDIR=client/src/jiken-reminder
+CLIENT_OUTDIR=client/jiken-reminder
 SERVER_OUTPUT_DIR=server/jiken-reminder
 
 mkdir -p ${CLIENT_OUTDIR} ${SERVER_OUTPUT_DIR}
