@@ -14,8 +14,9 @@ Vagrant.configure(2) do |config|
   $script = "
 sudo yum update -y --disablerepo=\* --enablerepo=base,updates ca-certificates
 sudo yum install -y epel-release
-sudo yum install -y --enablerepo=epel sshpass git unzip
+sudo yum install -y --enablerepo=epel sshpass git unzip gcc gcc-c++
 sudo yum install -y --enablerepo=epel-testing ansible
+sudo yum install -y nodejs npm –enablerepo=epel
 cd workspace
 cp vagrant/insecure_private_key /home/vagrant/.ssh/id_rsa
 cp vagrant/ssh_config /home/vagrant/.ssh/config
