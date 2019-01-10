@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package schedule;
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+
+service ScheduleService {
+  rpc CreateSchedule (CreateScheduleRequest) returns (CreateScheduleResponse) {
+    option (google.api.http) = {
+       post: "/schedule"
+    };
+  }
+  rpc ListSchedule (GetScheduleRequest) returns (GetScheduleResponse) {
+    option (google.api.http) = {
+       get: "schedule"
+    };
+  }
+}
+
+// CreateSchedule のリクエスト定義
+message CreateScheduleRequest {
+  string title = 1;
+  string deadline = 2;
+}
+
+// CreateSchedule のレスポンス定義
+message CreateScheduleResponse {
+  integer id = 1;
+  string title = 1;
+  string deadline = 2;
+}
+
+// CreateSchedule のリクエスト定義
+message ListScheduleRequest {}
+
+// CreateSchedule のレスポンス定義
+message ListScheduleResponse {
+  repeated Schedule schedules = 1;
+}

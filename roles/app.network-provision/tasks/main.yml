@@ -1,0 +1,10 @@
+---
+- name: setting ipv4
+  command: sysctl -w net.ipv4.ip_forward=1
+
+- name: setting firewalld
+  command: "{{ item }}"
+  with_items:
+    - service firewalld start
+    - firewall-cmd --zone=public --change-interface=enp0s8 --permanent
+    - firewall-cmd --reload

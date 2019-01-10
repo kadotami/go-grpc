@@ -1,0 +1,6 @@
+---
+- name: install docker registry 
+  command: docker pull registry:2.4.0
+
+- name: docker registry run
+  command: docker run -d -p 5000:5000 -v /var/opt:/var/lib/registry registry:2.4.0

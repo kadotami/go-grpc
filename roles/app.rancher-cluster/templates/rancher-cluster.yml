@@ -1,0 +1,23 @@
+nodes:
+{% for r in rancher_nodes %}
+  - address: {{ r.ip }}
+    user: "{{ admin_user.name }}"
+    role: [{{ r.roles }}]
+    ssh_key_path: "{{ user_home }}/.ssh/id_rsa"
+    labels:
+      app: {{ r.label }}
+{% endfor %}
+
+services:
+  etcd:
+    image: quay.io/coreos/etcd:{{ etcd_version }}
+  kube-api:
+    image: rancher/k8s:{{ rancher_k8s_version }}
+  kube-controller:
+    image: rancher/k8s:{{ rancher_k8s_version }}
+  scheduler:
+    image: rancher/k8s:{{ rancher_k8s_version }}
+  kubelet:
+    image: rancher/k8s:{{ rancher_k8s_version }}
+  kubeproxy:
+    image: rancher/k8s:{{ rancher_k8s_version }}

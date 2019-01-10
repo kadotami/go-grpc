@@ -1,0 +1,40 @@
+---
+- name: copy rke binary
+  copy: src=download/rke dest="{{ user_home }}/rke" owner={{ admin_user.name }} group={{ admin_user.name }} mode=0755
+
+- name: copy cluster config file
+  template: src=rancher-cluster.yml dest="{{ user_home }}/rancher-cluster.yml" owner={{ admin_user.name }} group={{ admin_user.name }} mode=0755
+
+- name: create cluster
+  command: ./rke up --config rancher-cluster.yml
+
+- name: check kubectl exist
+  command: kubectl
+  register: exist_kubectl
+  ignore_errors: True
+
+- name: setting kubectl repo
+  template: src=kubernetes.repo dest=/etc/yum.repos.d
+  when: exist_kubectl is failed
+
+- name: install kubectl
+  command: yum install -y kubectl-1.10.1-0
+  when: exist_kubectl is failed
+
+- name: make kube dir
+  file: path={{ user_home }}/.kube state=directory owner={{ admin_user.name }} group={{ admin_user.name }} mode=0755
+
+- name: copy cluster conf
+  command: cp {{ user_home }}/kube_config_rancher-cluster.yml {{ user_home }}/.kube/config 
+
+- name: change user right
+  command: "{{ item }}"
+  with_items:
+    - chown {{ admin_user.name }}:{{ admin_user.name }} {{ user_home }}/.kube/config
+    - chmod 755 {{ user_home }}/.kube/config
+
+- name: check kubectl exist
+  command: "kubectl get secret point-registry"
+  become_user: "{{ admin_user.name }}"
+  register: exist_registry
+  ignore_errors: True
